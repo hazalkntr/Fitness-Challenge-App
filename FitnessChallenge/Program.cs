@@ -44,6 +44,22 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.Use(async (context, next) =>
+{
+    var user = context.User;
+    var path = context.Request.Path;
+    if (!user.Identity.IsAuthenticated && 
+        path != "/Identity/Account/Login" && 
+        path != "/Identity/Account/Register" && 
+        path != "/Identity/Account/Logout" && 
+        !path.StartsWithSegments("/Identity/Account/Manage"))
+    {
+        context.Response.Redirect("/Identity/Account/Login");
+        return;
+    }
+    await next();
+});
+
 app.MapRazorPages();
 
 app.Run();

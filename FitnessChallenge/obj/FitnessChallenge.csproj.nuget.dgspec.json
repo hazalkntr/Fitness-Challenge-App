@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\Desktop\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj": {}
+    "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\Desktop\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj": {
+    "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj",
         "projectName": "FitnessChallenge",
-        "projectPath": "C:\\Users\\user\\Desktop\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj",
+        "projectPath": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\obj\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",

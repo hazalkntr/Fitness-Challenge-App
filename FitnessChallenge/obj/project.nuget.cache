@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "C9VEOgySiOeWre378Ueeh++2nMMnRE1yFQ99jKrc4QV2RuvDFJhAkt4jfLK9j9AoGrQD2s2gRKmXWRRYP7ltgw==",
+  "dgSpecHash": "Gx1MqaYa4+y/z3V6pGiyH9ad8eYExRRYH4+7LModfRNCPlsoK+xkaAPlMfhia+x5h8cR26Nb807jdG1qcZgZDQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Desktop\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj",
+  "projectFilePath": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\FitnessChallenge\\FitnessChallenge.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

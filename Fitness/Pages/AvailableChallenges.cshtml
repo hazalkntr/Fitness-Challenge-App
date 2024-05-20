@@ -1,0 +1,35 @@
+@page
+@model Fitness.Pages.AvailableChallengesModel
+@{
+    ViewData["Title"] = "Available Challenges";
+}
+
+<h1>Available Challenges</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var challenge in Model.AvailableChallenges)
+        {
+            <tr>
+                <td>@challenge.Title</td>
+                <td>@challenge.Description</td>
+                <td>@challenge.StartDate.ToShortDateString()</td>
+                <td>@challenge.EndDate?.ToShortDateString()</td>
+                <td>
+                    <form method="post" asp-page-handler="Join" asp-route-challengeId="@challenge.ChallengeId">
+                        <button type="submit" class="btn btn-primary">Join Challenge</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

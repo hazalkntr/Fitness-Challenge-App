@@ -22,4 +22,5 @@ public partial class User
     public string? City { get; set; }
 
     public byte[]? Photo { get; set; }
+
 }

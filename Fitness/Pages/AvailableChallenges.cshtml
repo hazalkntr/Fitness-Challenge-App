@@ -4,8 +4,26 @@
     ViewData["Title"] = "Available Challenges";
 }
 
+<style>
+    body {
+        background-image: url('/images/dumb.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    .fitness-form-container {
+        background: rgba(255, 255, 255, 0.8); 
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
 <h1>Available Challenges</h1>
 
+<div class="fitness-form-container">
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +40,7 @@
             <tr>
                 <td>@challenge.Title</td>
                 <td>@challenge.Description</td>
-                <td>@challenge.StartDate.ToShortDateString()</td>
+                <td>@challenge.StartDate?.ToShortDateString()</td>
                 <td>@challenge.EndDate?.ToShortDateString()</td>
                 <td>
                     <form method="post" asp-page-handler="Join" asp-route-challengeId="@challenge.ChallengeId">
@@ -33,3 +51,4 @@
         }
     </tbody>
 </table>
+</div>

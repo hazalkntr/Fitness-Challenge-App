@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Fitness.Models;
 
-public partial class ChallengeParticipants
+public partial class ChallengeParticipant
 {
     public int ParticipantId { get; set; }
 
-    public int UserId { get; set; }
+    public string UserId { get; set; } = null!;
 
     public int ChallengeId { get; set; }
 

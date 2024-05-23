@@ -42,7 +42,7 @@ namespace Fitness.Pages
                 return Unauthorized(); // User is not authenticated
             }
 
-            int userId = int.Parse(userIdClaim.Value);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             // Check if the user is already a participant in the challenge
             var existingParticipant = await _context.ChallengeParticipants
@@ -50,7 +50,7 @@ namespace Fitness.Pages
 
             if (existingParticipant == null)
             {
-                var participant = new ChallengeParticipants
+                var participant = new ChallengeParticipant
                 {
                     ChallengeId = challengeId,
                     UserId = userId,

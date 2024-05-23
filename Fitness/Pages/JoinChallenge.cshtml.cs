@@ -31,7 +31,7 @@ namespace Fitness.Pages
         }
 
         
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (userId == null)
         {
@@ -40,7 +40,7 @@ namespace Fitness.Pages
 
         // Check if the user is already participating in the challenge
         var existingParticipant = await _context.ChallengeParticipants
-            .FirstOrDefaultAsync(cp => cp.ChallengeId == ChallengeId && cp.UserId == userId);
+        .FirstOrDefaultAsync(cp => cp.ChallengeId == ChallengeId && cp.UserId == userId);
 
         if (existingParticipant != null)
         {
@@ -49,7 +49,7 @@ namespace Fitness.Pages
         }
 
         // Create a new ChallengeParticipants entity and add it to the context
-        var newParticipant = new ChallengeParticipants
+        var newParticipant = new ChallengeParticipant
         {
             ChallengeId = ChallengeId,
             UserId = userId,

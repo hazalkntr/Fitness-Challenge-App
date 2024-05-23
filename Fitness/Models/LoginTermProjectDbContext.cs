@@ -120,9 +120,6 @@ public partial class LoginTermProjectDbContext : DbContext
             entity.HasIndex(e => e.Username, "UQ__user__F3DBC5724F06E37A").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("userId");
-            entity.Property(e => e.City)
-                .HasMaxLength(50)
-                .HasColumnName("city");
             entity.Property(e => e.DateOfBirth)
                 .HasColumnType("datetime")
                 .HasColumnName("dateOfBirth");
@@ -138,7 +135,6 @@ public partial class LoginTermProjectDbContext : DbContext
             entity.Property(e => e.PasswordHash)
                 .HasMaxLength(255)
                 .HasColumnName("passwordHash");
-            entity.Property(e => e.Photo).HasColumnName("photo");
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .HasColumnName("username");

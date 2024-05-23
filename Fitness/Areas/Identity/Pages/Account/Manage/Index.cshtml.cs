@@ -10,12 +10,6 @@ using Fitness.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq;
-using System.IO;
-using System.Threading.Tasks;
-using Fitness.Pages;
-using System.Collections.Generic;
-
 
 namespace Fitness.Areas.Identity.Pages.Account.Manage
 {
@@ -24,25 +18,21 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly FitnessChallengeContext _context;
-        private readonly LoginTermProjectDbContext _context2;
- 
+        
         public IndexModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            FitnessChallengeContext context,
-            LoginTermProjectDbContext context2)
+            FitnessChallengeContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
-            _context2 = context2;
         }
-
+        
         [BindProperty]
         public BufferedSingleFileUploadDb FileUpload { get; set; } = new BufferedSingleFileUploadDb();
-
         public byte[]? Picture { get; set; }
-        public User? UserDetail { get; set; }
+        public UserDetail? ProfileDetail { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -78,7 +68,7 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
         }
-        
+
         public class BufferedSingleFileUploadDb
         {
             [Display(Name = "Profile Picture")]
@@ -97,35 +87,26 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber
             };
 
-            int userId;
-            if (int.TryParse(user.Id, out userId))
+            ProfileDetail = _context.UserDetails.Where(p => p.UserId == user.Id).FirstOrDefault();
+            if (ProfileDetail != null && ProfileDetail.Photo != null)
             {
-
-                UserDetail = _context2.Users.Where(p => p.UserId == userId).FirstOrDefault();
-                if (UserDetail != null && UserDetail.Photo != null)
-                {
-                    Picture = UserDetail.Photo;
-                }
-                else
-                {
-                    // Save a default image if no profile photo is available
-                    string path = "./wwwroot/images/empty_profile.jpg";
-                    using var stream = System.IO.File.OpenRead(path);
-                    var memoryStream = new MemoryStream();
-                    await stream.CopyToAsync(memoryStream);
-                    Picture = memoryStream.ToArray();
-                    UserDetail = new User
-                    {
-                        Photo = Picture,
-                        UserId = userId,
-                    };
-                    _context2.Users.Add(UserDetail);
-                    await _context2.SaveChangesAsync();
-                }
-            }    
+                Picture = ProfileDetail.Photo;
+            }
             else
             {
-                throw new ArgumentException("Invalid user ID");
+                // Save a default image if no profile photo is available
+                string path = "./wwwroot/images/empty_profile.jpg";
+                using var stream = System.IO.File.OpenRead(path);
+                var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                Picture = memoryStream.ToArray();
+                ProfileDetail = new UserDetail
+                {
+                    Photo = Picture,
+                    UserId = user.Id
+                };
+                _context.UserDetails.Add(ProfileDetail);
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -168,27 +149,19 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
 
-            int userId;
-            if (int.TryParse(user.Id, out userId))
-            {
-                UserDetail = _context2.Users.Where(p => p.UserId == userId).FirstOrDefault();
+            ProfileDetail = _context.UserDetails.Where(p => p.UserId == user.Id).FirstOrDefault();
 
-                if (FileUpload.FormFile != null)
-                {
-                    var memoryStream = new MemoryStream();
-                    await FileUpload.FormFile.CopyToAsync(memoryStream);
-                    if (UserDetail != null)
-                    {
-                        UserDetail.Photo = memoryStream.ToArray();
-                        _context2.Users.Update(UserDetail);
-                    }
-                }
-                    await _context2.SaveChangesAsync();
-            }
-            else
+            if (FileUpload.FormFile != null)
             {
-                throw new ArgumentException("Invalid user ID");
+                var memoryStream = new MemoryStream();
+                await FileUpload.FormFile.CopyToAsync(memoryStream);
+                if (ProfileDetail != null)
+                {
+                    ProfileDetail.Photo = memoryStream.ToArray();
+                    _context.UserDetails.Update(ProfileDetail);
+                }
             }
+                await _context.SaveChangesAsync();
 
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

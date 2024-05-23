@@ -40,7 +40,7 @@
             <tr>
                 <td>@challenge.Title</td>
                 <td>@challenge.Description</td>
-                <td>@challenge.StartDate?.ToShortDateString()</td>
+                <td>@challenge.StartDate.ToShortDateString()</td>
                 <td>@challenge.EndDate?.ToShortDateString()</td>
                 <td>
                     <form method="post" asp-page-handler="Join" asp-route-challengeId="@challenge.ChallengeId">

@@ -7,8 +7,6 @@
 
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
-
-            
 <div class="row">
     <div class="col-md-6">
         <div class="form-floating">Current profile photo <br>
@@ -22,7 +20,7 @@
                 <label asp-for="Username" class="form-label"></label>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
+                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
@@ -36,7 +34,6 @@
         </form>
     </div>
 </div>
-            
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

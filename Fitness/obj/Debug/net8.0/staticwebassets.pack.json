@@ -13,12 +13,24 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\dumb.jpg",
+      "PackagePath": "staticwebassets\\images\\dumb.jpg"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\dumbell.png",
+      "PackagePath": "staticwebassets\\images\\dumbell.png"
+    },
+    {
       "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\empty_profile.jpg",
       "PackagePath": "staticwebassets\\images\\empty_profile.jpg"
     },
     {
       "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\fitness.jpg",
       "PackagePath": "staticwebassets\\images\\fitness.jpg"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\run.jpg",
+      "PackagePath": "staticwebassets\\images\\run.jpg"
     },
     {
       "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\js\\site.js",

@@ -32,7 +32,20 @@ namespace Fitness.Pages
                 return Page();
             }
 
-            // Map the IsDeleted boolean to the Challenge entity
+            //the start date cant be earlier than the current date
+            if (Challenge.StartDate < DateTime.Now)
+            {
+                ModelState.AddModelError("Challenge.StartDate", "Start date cannot be earlier than the current date and hour.");
+                return Page();
+            }
+
+            //end date must be later than the start date -if entered
+            if (Challenge.EndDate.HasValue && Challenge.EndDate.Value <= Challenge.StartDate.AddHours(1))
+            {
+                ModelState.AddModelError(nameof(Challenge.EndDate), "End date must be at least 1 hour later than the start date.");
+                return Page();
+            }
+
             Challenge.IsDeleted = IsDeleted;
 
             _context.Challenges.Add(Challenge);

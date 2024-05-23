@@ -19,12 +19,30 @@ namespace Fitness.Pages
             _context = context;
         }
 
-        public IList<Challenge> AvailableChallenges { get; set; }
+        public IList<ChallengeWithJoinStatus> AvailableChallenges { get; set; }
+
+        public class ChallengeWithJoinStatus
+        {
+            public Challenge Challenge { get; set; }
+            public bool IsJoined { get; set; }
+        }
 
         public async Task OnGetAsync()
         {
-            AvailableChallenges = await _context.Challenges
-                                                .ToListAsync();
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim?.Value;
+
+            var challenges = await _context.Challenges.ToListAsync();
+            var joinedChallenges = await _context.ChallengeParticipants
+                .Where(cp => cp.UserId == userId)
+                .Select(cp => cp.ChallengeId)
+                .ToListAsync();
+
+            AvailableChallenges = challenges.Select(challenge => new ChallengeWithJoinStatus
+            {
+                Challenge = challenge,
+                IsJoined = joinedChallenges.Contains(challenge.ChallengeId)
+            }).ToList();
         }
 
         public async Task<IActionResult> OnPostJoinAsync(int challengeId)
@@ -35,16 +53,14 @@ namespace Fitness.Pages
                 return NotFound();
             }
 
-            // Get the current user's ID from the claims
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null)
             {
-                return Unauthorized(); // User is not authenticated
+                return Unauthorized();
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim.Value;
 
-            // Check if the user is already a participant in the challenge
             var existingParticipant = await _context.ChallengeParticipants
                 .FirstOrDefaultAsync(cp => cp.ChallengeId == challengeId && cp.UserId == userId);
 
@@ -64,6 +80,23 @@ namespace Fitness.Pages
             return RedirectToPage();
         }
 
+        public async Task<IActionResult> OnPostGiveUpAsync(int challengeId)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = userIdClaim?.Value;
+
+            var participant = await _context.ChallengeParticipants
+                .FirstOrDefaultAsync(cp => cp.ChallengeId == challengeId && cp.UserId == userId);
+
+            if (participant != null)
+            {
+                _context.ChallengeParticipants.Remove(participant);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
+        }
+
         public async Task<IActionResult> OnPostDeleteAsync(int challengeId)
         {
             var challenge = await _context.Challenges.FindAsync(challengeId);
@@ -71,8 +104,10 @@ namespace Fitness.Pages
             {
                 return NotFound();
             }
+
             _context.Challenges.Remove(challenge);
             await _context.SaveChangesAsync();
+
             return RedirectToPage();
         }
     }

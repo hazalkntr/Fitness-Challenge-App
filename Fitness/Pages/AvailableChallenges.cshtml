@@ -19,36 +19,68 @@
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+
+    .btn {
+        transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: #51a5ff;
+    }
+    .btn-danger:hover {
+        background-color: #ff5868;
+    }
+    .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    
 </style>
 
 <h1>Available Challenges</h1>
 
 <div class="fitness-form-container">
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var challenge in Model.AvailableChallenges)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@challenge.Title</td>
-                <td>@challenge.Description</td>
-                <td>@challenge.StartDate.ToShortDateString()</td>
-                <td>@challenge.EndDate?.ToShortDateString()</td>
-                <td>
-                    <form method="post" asp-page-handler="Join" asp-route-challengeId="@challenge.ChallengeId">
-                        <button type="submit" class="btn btn-primary">Join Challenge</button>
-                    </form>
-                </td>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var challengeWithJoinStatus in Model.AvailableChallenges)
+            {
+                var challenge = challengeWithJoinStatus.Challenge;
+                var isJoined = challengeWithJoinStatus.IsJoined;
+                <tr>
+                    <td>@challenge.Title</td>
+                    <td>@challenge.Description</td>
+                    <td>@challenge.StartDate.ToShortDateString()</td>
+                    <td>@challenge.EndDate?.ToShortDateString()</td>
+                    <td>
+                        @if (isJoined)
+                        {
+                            <div>
+                                @if (challengeWithJoinStatus.IsJoined)
+                                {
+                                    <button class="btn btn-success" disabled>Joined!</button>
+                                    <form method="post" asp-page-handler="GiveUp" asp-route-challengeId="@challenge.ChallengeId">
+                                        <button type="submit" class="btn btn-danger">Give Up :(</button>
+                                    </form>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <form method="post" asp-page-handler="Join" asp-route-challengeId="@challenge.ChallengeId">
+                                <button type="submit" class="btn btn-primary">Join Challenge</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

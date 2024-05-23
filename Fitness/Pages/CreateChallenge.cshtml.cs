@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Fitness.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace Fitness.Pages
 {
@@ -21,6 +22,15 @@ namespace Fitness.Pages
         [BindProperty]
         public bool IsDeleted { get; set; }
 
+        [BindProperty]
+        public string Category { get; set; } 
+        
+        [BindProperty]
+        public string DifficultyLevel { get; set; } 
+        
+        [BindProperty]
+        public string Instructions { get; set; }
+
         public void OnGet()
         {
         }
@@ -29,6 +39,15 @@ namespace Fitness.Pages
         {
             if (!ModelState.IsValid)
             {
+                Console.WriteLine("Model state is not valid:");
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    foreach (var error in state.Errors)
+                    {
+                        Console.WriteLine($"{key}: {error.ErrorMessage}");
+                    }
+                }
                 return Page();
             }
 
@@ -46,7 +65,19 @@ namespace Fitness.Pages
                 return Page();
             }
 
+            // Get the current user's ID from the claims
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized(); // User is not authenticated
+            }
+
+            var userId = userIdClaim.Value;
+            Challenge.UserId = userId;
             Challenge.IsDeleted = IsDeleted;
+            Challenge.Category = Category;
+            Challenge.DifficultyLevel = DifficultyLevel;
+            Challenge.Instructions = Instructions;
 
             _context.Challenges.Add(Challenge);
             await _context.SaveChangesAsync();

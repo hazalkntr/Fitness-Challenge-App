@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Available Challenges";
 }
+@using System.Security.Claims
+
 
 <style>
     body {
@@ -33,6 +35,34 @@
         cursor: not-allowed;
         opacity: 0.6;
     }
+    .give-up-btn {
+        background-color: #ffcc80; 
+        border-color: #ffcc80; 
+        color: #333; 
+        padding: 6px 12px; 
+        font-size: 14px;
+        border-radius: 4px; 
+        transition: background-color 0.3s ease; 
+    }
+    .give-up-btn:hover {
+        background-color: #ffa726; 
+        border-color: #ffa726; 
+        color: #333; 
+    }
+    .save-btn {
+        background-color: #fa92ec; 
+        border-color: #ff6af8; 
+        color: #333; 
+        padding: 6px 12px; 
+        font-size: 14px;
+        border-radius: 4px; 
+        transition: background-color 0.3s ease; 
+    }
+    .save-btn:hover {
+        background-color: #fdbbff; 
+        border-color: #ff6acd; 
+        color: #333; 
+    }
     
 </style>
 
@@ -46,6 +76,9 @@
                 <th>Description</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Category</th>
+                <th>Difficulty Level</th>
+                <th>Instructions</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -59,6 +92,10 @@
                     <td>@challenge.Description</td>
                     <td>@challenge.StartDate.ToShortDateString()</td>
                     <td>@challenge.EndDate?.ToShortDateString()</td>
+                    <td>@challenge.Category</td>
+                    <td>@challenge.DifficultyLevel</td>
+                    <td>@challenge.Instructions</td>
+                    
                     <td>
                         @if (isJoined)
                         {
@@ -67,7 +104,7 @@
                                 {
                                     <button class="btn btn-success" disabled>Joined!</button>
                                     <form method="post" asp-page-handler="GiveUp" asp-route-challengeId="@challenge.ChallengeId">
-                                        <button type="submit" class="btn btn-danger">Give Up :(</button>
+                                        <button type="submit" class="give-up-btn">Give Up :(</button>
                                     </form>
                                 }
                             </div>
@@ -78,8 +115,65 @@
                                 <button type="submit" class="btn btn-primary">Join Challenge</button>
                             </form>
                         }
+                        
+                        @if (User.Identity.IsAuthenticated && challenge.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                        {
+                            <form method="post" asp-page-handler="Delete" asp-route-challengeId="@challenge.ChallengeId">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        }
+                        <form method="post" asp-page-handler="SaveToFavorites" asp-route-challengeId="@challenge.ChallengeId">
+                            <button type="submit" class="save-btn">Save to Favorites</button>
+                        </form>
                     </td>
                 </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div class="fitness-form-container">
+    <div class="row">
+        <div class="col-md-6">
+            <form method="get">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="searchKeyword" placeholder="Search by keyword"><br>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="difficultyLevel">
+                        <option value="">All Difficulty Levels</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="category">
+                        <option value="">All Categories</option>
+                        <option value="Step">Step</option>
+                        <option value="Squad">Squad</option>
+                        <option value="Cardio">Cardio</option>
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Body Building">Body Building</option>
+                        <option value="Yoga">Yoga</option>
+                        <option value="Muscle Gain">Muscle Gain</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+    <table class="table">
+        <!-- Table headers -->
+        <tbody>
+            @foreach (var challengeWithJoinStatus in Model.AvailableChallenges)
+            {
+                <!-- Display filtered challenges -->
             }
         </tbody>
     </table>

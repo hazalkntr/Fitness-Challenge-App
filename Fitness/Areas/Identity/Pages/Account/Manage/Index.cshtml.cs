@@ -10,6 +10,11 @@ using Fitness.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
+
+
 
 namespace Fitness.Areas.Identity.Pages.Account.Manage
 {
@@ -28,11 +33,15 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _context = context;
         }
-        
+
         [BindProperty]
         public BufferedSingleFileUploadDb FileUpload { get; set; } = new BufferedSingleFileUploadDb();
         public byte[]? Picture { get; set; }
         public UserDetail? ProfileDetail { get; set; }
+        public IList<Challenge> FavoriteChallenges { get; set; }
+        
+        [BindProperty]
+        public string Description { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -67,6 +76,11 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Description]
+            [Display(Name = "Description")]
+
+            public string Description { get; set; }
         }
 
         public class BufferedSingleFileUploadDb
@@ -108,6 +122,11 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
                 _context.UserDetails.Add(ProfileDetail);
                 await _context.SaveChangesAsync();
             }
+
+            FavoriteChallenges = await _context.UserRates
+            .Where(ur => ur.UserId == user.Id && ur.Rate > 0)
+            .Select(ur => ur.Challenge)
+            .ToListAsync();
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -119,8 +138,21 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
             }
 
             await LoadAsync(user);
+
+
+            var favoriteChallengeIds = await _context.UserFavorites
+                .Where(uf => uf.UserId == user.Id)
+                .Select(uf => uf.ChallengeId)
+                .ToListAsync();
+
+            
+            FavoriteChallenges = await _context.Challenges
+                .Where(c => favoriteChallengeIds.Contains(c.ChallengeId))
+                .ToListAsync();
+
             return Page();
         }
+
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -145,6 +177,14 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            var userDetails = await _context.UserDetails.FirstOrDefaultAsync(p => p.UserId == user.Id);
+            if (userDetails != null)
+            {
+                userDetails.Description = Description;
+                _context.UserDetails.Update(userDetails);
+                await _context.SaveChangesAsync();
             }
 
             await _signInManager.RefreshSignInAsync(user);

@@ -5,12 +5,7 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link btn btn-light text-dark" style="background-color: #c9e7fa;" asp-area="" asp-page="/AvailableChallenges">Available Challenges</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link btn btn-light text-dark" style="background-color: #faf3c9;" asp-area="" asp-page="/CreateChallenge">Create Challenge</a>
-        </li>
+        
         <li class="nav-item">
             <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
         </li>

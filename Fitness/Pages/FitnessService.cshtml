@@ -4,7 +4,6 @@
     ViewData["Title"] = "Fitness Service";
 }
 
-
 <style>
     body {
         background-image: url('/images/fitness.jpg');
@@ -20,13 +19,37 @@
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+    .btn {
+        margin-right: 10px; 
+    }
+    .btn:hover {
+        transform: translateY(-3px); 
+    }
+    .btn-group {
+        display: flex;
+        justify-content: center; 
+    }
+    
 </style>
 
-<div class="fitness-form-container">
-    <h1>Fitness Challenge Service</h1><br>
-        
-    <h4>Welcome to Fitness Challenge Service!</h6> <br>
-    <h5>You are now logged in and can interact with the Fitness Website.</h5> <br>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="fitness-form-container">
+                <h1 class="mb-4">Fitness Challenge Service</h1>
+                
+                <h4>Welcome to Fitness Challenge Service!</h4><br>
+                <h5 class="mb-4">You are now logged in and can interact with the Fitness Website.</h5><br>
 
-    <h6>Look to the right top of your screen! You should see the necessary buttons. Enjoy and be healthy!</h6>
+                
+
+                <h6>Look to the center of your screen! You should see the necessary buttons for a smooth experience. Enjoy and be healthy!</h6><br>
+                
+                 <div class="btn-group mb-4" role="group" aria-label="Fitness Challenge Buttons">
+                    <a class="btn btn-light text-dark" style="background-color: #98d8ff;" asp-area="" asp-page="/AvailableChallenges">Available Challenges</a>
+                    <a class="btn btn-light text-dark"  style="background-color: #88f888;" asp-area="" asp-page="/CreateChallenge">Create Challenge</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -37,6 +37,8 @@ public partial class FitnessChallengeContext : DbContext
 
     public virtual DbSet<UserDetail> UserDetails { get; set; }
 
+    public virtual DbSet<UserFavorite> UserFavorites { get; set; }
+
     public virtual DbSet<UserRate> UserRates { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -126,13 +128,22 @@ public partial class FitnessChallengeContext : DbContext
             entity.ToTable("challenges");
 
             entity.Property(e => e.ChallengeId).HasColumnName("challengeId");
+            entity.Property(e => e.Category)
+                .HasMaxLength(50)
+                .HasColumnName("category");
             entity.Property(e => e.Description)
                 .HasMaxLength(100)
                 .IsFixedLength()
                 .HasColumnName("description");
+            entity.Property(e => e.DifficultyLevel)
+                .HasMaxLength(50)
+                .HasColumnName("difficultyLevel");
             entity.Property(e => e.EndDate)
                 .HasColumnType("datetime")
                 .HasColumnName("endDate");
+            entity.Property(e => e.Instructions)
+                .HasMaxLength(50)
+                .HasColumnName("instructions");
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
             entity.Property(e => e.StartDate)
                 .HasColumnType("datetime")
@@ -141,6 +152,9 @@ public partial class FitnessChallengeContext : DbContext
                 .HasMaxLength(50)
                 .IsFixedLength()
                 .HasColumnName("title");
+            entity.Property(e => e.UserId)
+                .HasMaxLength(450)
+                .HasColumnName("userId");
         });
 
         modelBuilder.Entity<ChallengeParticipant>(entity =>
@@ -230,7 +244,24 @@ public partial class FitnessChallengeContext : DbContext
             entity.Property(e => e.City)
                 .HasMaxLength(50)
                 .HasColumnName("city");
+            entity.Property(e => e.Description)
+                .HasMaxLength(500)
+                .HasColumnName("description");
             entity.Property(e => e.Photo).HasColumnName("photo");
+            entity.Property(e => e.UserId)
+                .HasMaxLength(450)
+                .HasColumnName("userId");
+        });
+
+        modelBuilder.Entity<UserFavorite>(entity =>
+        {
+            entity.ToTable("userFavorite");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ChallengeId).HasColumnName("challengeId");
+            entity.Property(e => e.SavedDate)
+                .HasColumnType("datetime")
+                .HasColumnName("savedDate");
             entity.Property(e => e.UserId)
                 .HasMaxLength(450)
                 .HasColumnName("userId");
@@ -246,6 +277,10 @@ public partial class FitnessChallengeContext : DbContext
             entity.Property(e => e.UserId)
                 .HasMaxLength(450)
                 .HasColumnName("userId");
+
+            entity.HasOne(d => d.Challenge).WithMany(p => p.UserRates)
+                .HasForeignKey(d => d.ChallengeId)
+                .HasConstraintName("FK_userRate_challenge_challengeId");
         });
 
         OnModelCreatingPartial(modelBuilder);

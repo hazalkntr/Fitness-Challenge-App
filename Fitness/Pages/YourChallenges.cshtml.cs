@@ -58,86 +58,75 @@ namespace Fitness.Pages
                         .Select(l => new LeaderboardViewModel
                         {
                             Rank = l.Rank,
-                            Username = _context.Users.FirstOrDefault(u => u.UserId == l.UserId).Username,
+                            Username = _context.Users.FirstOrDefault(u => u.UserId == l.UserId).Username ?? "Unknown User",
                             Score = l.Score
                         })
                         .ToList()
                 })
                 .ToListAsync();
 
+            // Ensure the leaderboard includes all participants
             foreach (var challengeWithJoinStatus in UserChallenges)
             {
-                
-                var participant = await _context.ChallengeParticipants
-                    .FirstOrDefaultAsync(cp => cp.UserId == userId && cp.ChallengeId == challengeWithJoinStatus.Challenge.ChallengeId);
-
-                if (participant != null)
-                {
-                    participant.StreakCount = participant.StreakCount ?? 0;
-
-                    double score = CalculateScore(participant.StreakCount.Value);
-
-                    var currentUserLeaderboardEntry = challengeWithJoinStatus.Leaderboard
-                        .FirstOrDefault(l => l.Username == participant.UserId);
-
-                    if (currentUserLeaderboardEntry != null)
-                    {
-                        currentUserLeaderboardEntry.Score = score;
-                    }
-                    else
-                    {
-                        string usernameOrEmail = GetUserUsername(participant.UserId);
-                        Console.WriteLine("HEREEEEEE");
-                            Console.WriteLine("AAAAAAAAAAA........");
-
-                        Console.WriteLine($"USERNAME : {usernameOrEmail}");
-
-                        //new entry for the current user
-                        challengeWithJoinStatus.Leaderboard.Add(new LeaderboardViewModel
-                        {
-                            
-                            Rank = 0, //temporarily 0 .
-                            Username = participant.UserId,
-                            Score = score
-                        });
-
-                        challengeWithJoinStatus.Leaderboard = challengeWithJoinStatus.Leaderboard
-                            .OrderByDescending(l => l.Score)
-                            .ToList();
-
-                        for (int i = 0; i < challengeWithJoinStatus.Leaderboard.Count; i++)
-                        {
-                            challengeWithJoinStatus.Leaderboard[i].Rank = i + 1; //ranks are in descending order
-                        }
-                    }
-                }
+                Console.WriteLine($"Updating leaderboard for challenge ID: {challengeWithJoinStatus.Challenge.ChallengeId}");
+                await UpdateLeaderboardAsync(challengeWithJoinStatus.Challenge.ChallengeId, challengeWithJoinStatus.Leaderboard);
             }
 
             return Page();
         }
 
-        private double CalculateScore(int streakCount)
+        private async Task UpdateLeaderboardAsync(int challengeId, List<LeaderboardViewModel> leaderboard)
         {
-            // scoring logic: Score = StreakCount * 10 (for leaderboards)
-            return streakCount * 10;
+            // Retrieve participants of the challenge
+            var participants = await _context.ChallengeParticipants
+                .Where(cp => cp.ChallengeId == challengeId)
+                .ToListAsync();
+
+            foreach (var participant in participants)
+            {
+                Console.WriteLine($"Processing participant: {participant.UserId}");
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == participant.UserId);
+                if (user != null)
+                {
+                    Console.WriteLine($"Found user: {user.Username}");
+                    var existingEntry = leaderboard.FirstOrDefault(l => l.Username == user.Username);
+                    if (existingEntry != null)
+                    {
+                        // Update existing entry
+                        existingEntry.Score = CalculateScore(participant.StreakCount ?? 0);
+                        Console.WriteLine($"Updated score for {user.Username}: {existingEntry.Score}");
+                    }
+                    else
+                    {
+                        // Add new entry
+                        leaderboard.Add(new LeaderboardViewModel
+                        {
+                            Rank = 0, // Will be updated later
+                            Username = user.Username,
+                            Score = CalculateScore(participant.StreakCount ?? 0)
+                        });
+                        Console.WriteLine($"Added new entry for {user.Username}: {leaderboard.Last().Score}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"User not found for ID: {participant.UserId}");
+                }
+            }
+
+            // Order and assign ranks
+            leaderboard = leaderboard.OrderByDescending(l => l.Score).ToList();
+            for (int i = 0; i < leaderboard.Count; i++)
+            {
+                leaderboard[i].Rank = i + 1;
+                Console.WriteLine($"Rank {leaderboard[i].Rank}: {leaderboard[i].Username} with score {leaderboard[i].Score}");
+            }
         }
 
-        private string GetUserUsername(string userId)
+        private double CalculateScore(int streakCount)
         {
-            Console.WriteLine("Getting username for user with ID: " + userId);
-
-            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
-
-            if (user != null)
-            {
-                Console.WriteLine("User found with ID: " + userId + ". Username: " + user.Username);
-                return user.Username;
-            }
-            else
-            {
-                Console.WriteLine("User with ID " + userId + " not found.");
-                return "";
-            }
+            // Scoring logic: Score = StreakCount * 10 (for leaderboards)
+            return streakCount * 10;
         }
 
         public async Task<IActionResult> OnPostUpdateStreakAsync(int challengeId, bool performedToday)
@@ -158,6 +147,7 @@ namespace Fitness.Pages
 
             if (!performedToday)
             {
+                Console.WriteLine("updating by 1111111111111111111");
                 participant.StreakCount = participant.StreakCount.HasValue ? participant.StreakCount + 1 : 1;
             }
 
@@ -165,6 +155,5 @@ namespace Fitness.Pages
 
             return RedirectToPage();
         }
-
     }
 }

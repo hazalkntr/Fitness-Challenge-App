@@ -18,6 +18,7 @@
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
     }
     .btn {
         margin-right: 10px; 
@@ -27,9 +28,20 @@
     }
     .btn-group {
         display: flex;
-        justify-content: center; 
+        justify-content: center;
+        margin-bottom: 20px; 
     }
-    
+    .bulleted-list {
+        text-align: left;
+        margin-top: 10px; 
+    }
+    .section-container {
+        display: flex;
+        justify-content: space-around;
+    }
+    .section {
+        width: 45%; /* Adjust as needed */
+    }
 </style>
 
 <div class="container mt-5">
@@ -41,13 +53,30 @@
                 <h4>Welcome to Fitness Challenge Service!</h4><br>
                 <h5 class="mb-4">You are now logged in and can interact with the Fitness Website.</h5><br>
 
-                
-
                 <h6>Look to the center of your screen! You should see the necessary buttons for a smooth experience. Enjoy and be healthy!</h6><br>
                 
-                 <div class="btn-group mb-4" role="group" aria-label="Fitness Challenge Buttons">
-                    <a class="btn btn-light text-dark" style="background-color: #98d8ff;" asp-area="" asp-page="/AvailableChallenges">Available Challenges</a>
-                    <a class="btn btn-light text-dark"  style="background-color: #88f888;" asp-area="" asp-page="/CreateChallenge">Create Challenge</a>
+                <div class="section-container">
+                    <div class="section">
+                        <a class="btn btn-light text-dark" style="background-color: #98d8ff;" asp-area="" asp-page="/AvailableChallenges">Available Challenges</a>
+                        <div class="bulleted-list">
+                            <ul>
+                                <p><strong>click here to:</strong></p>
+                                <li>view available challenges, browsing, and joining.</li>
+                                <li>search for challenges based on your requirement</li>
+                                <li>filter to sort challenges based on your requirement</li>
+                                <li>save your favorite challenges to your profile which you can view on your profile page later</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <a class="btn btn-light text-dark" style="background-color: #88f888;" asp-area="" asp-page="/CreateChallenge">Create Challenge</a>
+                        <div class="bulleted-list">
+                            <ul>
+                                <p><strong>click here to:</strong></p>
+                                <li>add new challenges with details as per your wish.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

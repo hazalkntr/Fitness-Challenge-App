@@ -1,5 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+<style>
+    .nav-link {
+        margin-right: 10px; 
+    }
+    .nav-link:hover {
+        transform: translateY(-3px); 
+    }
+</style>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,7 +34,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/FitnessService">Fitness Service</a>
+                            <a class="nav-link text-dark" style="background-color: #fcfa97;" asp-area="" asp-page="/FitnessService">Fitness Service</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

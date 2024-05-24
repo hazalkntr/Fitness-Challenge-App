@@ -58,7 +58,18 @@
         </div>
         <div class="form-group">
             <label asp-for="Category" class="control-label"></label>
-            <input asp-for="Category" class="form-control" />
+                <select asp-for="Category" class="form-control">
+                    <option value="">All Categories</option>
+                    <option value="Step">Step</option>
+                    <option value="Squad">Squad</option>
+                    <option value="Cardio">Cardio</option>
+                    <option value="Weight Loss">Weight Loss</option>
+                    <option value="Body Building">Body Building</option>
+                    <option value="Yoga">Yoga</option>
+                    <option value="Muscle Gain">Muscle Gain</option>
+                    <option value="Running">Running</option>
+                    <option value="General">General</option>
+                </select>
             <span asp-validation-for="Category" class="text-danger"></span>
         </div>
         <div class="form-group">

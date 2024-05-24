@@ -30,8 +30,22 @@ namespace Fitness.Pages
             public Challenge Challenge { get; set; }
             public bool IsJoined { get; set; }
         }
+        public class DifficultyLevelComparer : IComparer<string>
+        {
+            public int Compare(string x, string y)
+            {
+                var order = new Dictionary<string, int>
+                {
+                    { "Easy", 1 },
+                    { "Medium", 2 },
+                    { "Hard", 3 }
+                };
 
-        public async Task OnGetAsync(string searchKeyword, string difficultyLevel, string category)
+                return order[x].CompareTo(order[y]);
+            }
+        }
+
+        public async Task OnGetAsync(string searchKeyword, string difficultyLevel, string category, string sortBy)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             var userId = userIdClaim?.Value;
@@ -56,8 +70,22 @@ namespace Fitness.Pages
             {
                 query = query.Where(challenge => challenge.Category == category);
             }
+            
 
             var filteredChallenges = await query.ToListAsync();
+
+            switch (sortBy)
+            {
+                case "Difficulty":
+                    filteredChallenges = filteredChallenges.OrderBy(challenge => challenge.DifficultyLevel, new DifficultyLevelComparer()).ToList();
+                    break;
+                case "Category":
+                    filteredChallenges = filteredChallenges.OrderBy(challenge => challenge.Category).ToList();
+                    break;
+                default:
+                    break;
+            }
+            
 
             var joinedChallenges = await _context.ChallengeParticipants
                 .Where(cp => cp.UserId == userId)

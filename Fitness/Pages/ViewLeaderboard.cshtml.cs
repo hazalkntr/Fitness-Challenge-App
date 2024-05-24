@@ -26,7 +26,7 @@ namespace Fitness.Pages
         public class LeaderboardViewModel
         {
             public int Rank { get; set; }
-            public string Username { get; set; } = "";
+            public string Email { get; set; } = "";
             public double Score { get; set; }
         }
 
@@ -50,7 +50,7 @@ namespace Fitness.Pages
                 .Select(l => new LeaderboardViewModel
                 {
                     Rank = l.Rank,
-                    Username = GetUserUsername(l.UserId),
+                    Email = GetUserEmail(l.UserId),
                     Score = l.Score
                 })
                 .ToListAsync();
@@ -58,14 +58,11 @@ namespace Fitness.Pages
             return Page();
         }
 
-        // Make the GetUserUsername method static
-        private static string GetUserUsername(string userId)
-        {
-            // Access the database context statically
-            using var context = new FitnessChallengeContext();
-            var user = context.Users.FirstOrDefault(u => u.UserId == userId);
-            return user != null ? user.Username : "";
-        }
+        private string GetUserEmail(string userId)
+    {
+        var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+        return user != null ? user.Email : "";
+    }
 
     }
 }

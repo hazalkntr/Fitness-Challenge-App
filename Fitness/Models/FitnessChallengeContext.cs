@@ -142,7 +142,7 @@ public partial class FitnessChallengeContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("endDate");
             entity.Property(e => e.Instructions)
-                .HasMaxLength(50)
+                .HasMaxLength(1000)
                 .HasColumnName("instructions");
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
             entity.Property(e => e.StartDate)
@@ -173,6 +173,7 @@ public partial class FitnessChallengeContext : DbContext
             entity.Property(e => e.Progress)
                 .HasMaxLength(100)
                 .HasColumnName("progress");
+            entity.Property(e => e.StreakCount).HasColumnName("streakCount");
             entity.Property(e => e.UserId)
                 .HasMaxLength(450)
                 .HasColumnName("userId");

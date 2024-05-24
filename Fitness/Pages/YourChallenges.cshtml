@@ -25,6 +25,23 @@
             border-radius: 10px;
             margin: 20px 0;
         }
+
+        .update-streak-button {
+            
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px; 
+            background-color: #ee943f;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .update-streak-button:hover {
+            background-color: #ce741f; 
+        }
     </style>
 </head>
 <body>
@@ -36,6 +53,8 @@
             @foreach (var challengeWithJoinStatus in Model.UserChallenges)
             {
                 var challenge = challengeWithJoinStatus.Challenge;
+                var participant = challenge.ChallengeParticipants.FirstOrDefault();
+                
                 <div class="challenge-container">
                     <h2>@challenge.Title</h2>
                     <p>@challenge.Description</p>
@@ -44,12 +63,13 @@
                     <p><strong>Category:</strong> @challenge.Category</p>
                     <p><strong>Difficulty Level:</strong> @challenge.DifficultyLevel</p>
                     <p><strong>Instructions:</strong> @challenge.Instructions</p>
+                    <p><strong>Streak Count:</strong> @participant?.StreakCount</p>
                     
                     <form method="post" asp-page-handler="UpdateStreak" asp-route-challengeId="@challenge.ChallengeId">
                         <label>
-                            <input type="checkbox" name="performedToday" /> Did you perform necessary actions for this challenge today?
+                            <input type="checkbox" name="performedToday" /> Did you perform necessary actions for this challenge?
                         </label>
-                        <button type="submit" class="btn btn-primary">Update Streak</button>
+                        <button type="submit" class="update-streak-button">Update Streak</button><br>
                     </form>
 
                     <h3>Leaderboard</h3>

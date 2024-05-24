@@ -25,7 +25,6 @@ namespace Fitness.Pages
         {
             public Challenge Challenge { get; set; }
             public List<LeaderboardViewModel> Leaderboard { get; set; } = new List<LeaderboardViewModel>();
-            public int UserStreakCount { get; set; }
         }
 
         public class LeaderboardViewModel
@@ -53,10 +52,6 @@ namespace Fitness.Pages
                 .Select(c => new ChallengeWithJoinStatus
                 {
                     Challenge = c,
-                    /*UserStreakCount = _context.ChallengeParticipants
-                        .Where(cp => cp.ChallengeId == c.ChallengeId && cp.UserId == userId)
-                        .Select(cp => cp.StreakCount)
-                        .FirstOrDefault(),*/
                     Leaderboard = _context.Leaderboards
                         .Where(l => l.ChallengeId == c.ChallengeId)
                         .OrderBy(l => l.Rank)
@@ -70,7 +65,79 @@ namespace Fitness.Pages
                 })
                 .ToListAsync();
 
+            foreach (var challengeWithJoinStatus in UserChallenges)
+            {
+                
+                var participant = await _context.ChallengeParticipants
+                    .FirstOrDefaultAsync(cp => cp.UserId == userId && cp.ChallengeId == challengeWithJoinStatus.Challenge.ChallengeId);
+
+                if (participant != null)
+                {
+                    participant.StreakCount = participant.StreakCount ?? 0;
+
+                    double score = CalculateScore(participant.StreakCount.Value);
+
+                    var currentUserLeaderboardEntry = challengeWithJoinStatus.Leaderboard
+                        .FirstOrDefault(l => l.Username == participant.UserId);
+
+                    if (currentUserLeaderboardEntry != null)
+                    {
+                        currentUserLeaderboardEntry.Score = score;
+                    }
+                    else
+                    {
+                        string usernameOrEmail = GetUserUsername(participant.UserId);
+                        Console.WriteLine("HEREEEEEE");
+                            Console.WriteLine("AAAAAAAAAAA........");
+
+                        Console.WriteLine($"USERNAME : {usernameOrEmail}");
+
+                        //new entry for the current user
+                        challengeWithJoinStatus.Leaderboard.Add(new LeaderboardViewModel
+                        {
+                            
+                            Rank = 0, //temporarily 0 .
+                            Username = participant.UserId,
+                            Score = score
+                        });
+
+                        challengeWithJoinStatus.Leaderboard = challengeWithJoinStatus.Leaderboard
+                            .OrderByDescending(l => l.Score)
+                            .ToList();
+
+                        for (int i = 0; i < challengeWithJoinStatus.Leaderboard.Count; i++)
+                        {
+                            challengeWithJoinStatus.Leaderboard[i].Rank = i + 1; //ranks are in descending order
+                        }
+                    }
+                }
+            }
+
             return Page();
+        }
+
+        private double CalculateScore(int streakCount)
+        {
+            // scoring logic: Score = StreakCount * 10 (for leaderboards)
+            return streakCount * 10;
+        }
+
+        private string GetUserUsername(string userId)
+        {
+            Console.WriteLine("Getting username for user with ID: " + userId);
+
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+
+            if (user != null)
+            {
+                Console.WriteLine("User found with ID: " + userId + ". Username: " + user.Username);
+                return user.Username;
+            }
+            else
+            {
+                Console.WriteLine("User with ID " + userId + " not found.");
+                return "";
+            }
         }
 
         public async Task<IActionResult> OnPostUpdateStreakAsync(int challengeId, bool performedToday)
@@ -89,32 +156,15 @@ namespace Fitness.Pages
                 return NotFound();
             }
 
-            if (performedToday)
+            if (!performedToday)
             {
-                //participant.StreakCount++;
-                var leaderboardEntry = await _context.Leaderboards
-                    .FirstOrDefaultAsync(l => l.ChallengeId == challengeId && l.UserId == userId);
-
-                if (leaderboardEntry == null)
-                {
-                    leaderboardEntry = new Leaderboard
-                    {
-                        ChallengeId = challengeId,
-                        UserId = userId,
-                        Score = 1,
-                        Rank = _context.Leaderboards.Count(l => l.ChallengeId == challengeId) + 1
-                    };
-                    _context.Leaderboards.Add(leaderboardEntry);
-                }
-                else
-                {
-                    leaderboardEntry.Score++;
-                }
-
-                await _context.SaveChangesAsync();
+                participant.StreakCount = participant.StreakCount.HasValue ? participant.StreakCount + 1 : 1;
             }
+
+            await _context.SaveChangesAsync();
 
             return RedirectToPage();
         }
+
     }
 }

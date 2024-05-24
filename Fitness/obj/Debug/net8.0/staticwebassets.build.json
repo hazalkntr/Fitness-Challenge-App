@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Om6A7qD+5ZIzPilV1/IC8TnuoQrJavKLWWNLWHiTnhY=",
+  "Hash": "x2zzqf+Sb0nbTNGG8xwxXByEmAcEh0fRamqXTydR6MY=",
   "Source": "Fitness",
   "BasePath": "_content/Fitness",
   "Mode": "Default",
@@ -1326,6 +1326,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\fitness.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\gym.jpg",
+      "SourceId": "Fitness",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\",
+      "BasePath": "_content/Fitness",
+      "RelativePath": "images/gym.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\gym.jpg"
     },
     {
       "Identity": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\nature.jpg",

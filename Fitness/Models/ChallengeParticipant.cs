@@ -15,5 +15,7 @@ public partial class ChallengeParticipant
 
     public string? Progress { get; set; }
 
+    public int? StreakCount { get; set; }
+
     public virtual Challenge Challenge { get; set; } = null!;
 }

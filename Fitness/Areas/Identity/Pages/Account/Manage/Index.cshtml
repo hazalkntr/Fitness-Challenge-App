@@ -5,6 +5,40 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
+<style>
+    .favorite-challenges {
+        padding-left: 20px;
+    }
+
+    .favorite-challenge-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        list-style-type: disc; /* Ensure bullet points are shown */
+    }
+
+    .btn-remove {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-remove:hover {
+        background-color: #ff8793;
+    }
+
+    .btn-remove:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.5);
+    }
+</style>
+
+
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
@@ -38,10 +72,15 @@
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
             <div><br>
                 <h4>Favorite Challenges</h4>
-                <ul>
+                <ul class="favorite-challenges">
                     @foreach (var challenge in Model.FavoriteChallenges)
                     {
-                        <li>@challenge.Title</li>
+                        <li class="favorite-challenge-item">
+                            <span>• @challenge.Title</span>
+                            <form method="post" asp-page-handler="RemoveFavorite" asp-route-id="@challenge.ChallengeId" style="display:inline;">
+                                <button type="submit" class="btn-remove">Remove</button>
+                            </form>
+                        </li>
                     }
                 </ul>
             </div>

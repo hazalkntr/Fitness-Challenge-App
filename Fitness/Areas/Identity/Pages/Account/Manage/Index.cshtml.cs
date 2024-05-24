@@ -98,10 +98,11 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Description = (await _context.UserDetails.FirstOrDefaultAsync(p => p.UserId == user.Id))?.Description ?? string.Empty // Load description from UserDetails
             };
 
-            ProfileDetail = _context.UserDetails.Where(p => p.UserId == user.Id).FirstOrDefault();
+            ProfileDetail = await _context.UserDetails.FirstOrDefaultAsync(p => p.UserId == user.Id);
             if (ProfileDetail != null && ProfileDetail.Photo != null)
             {
                 Picture = ProfileDetail.Photo;
@@ -124,10 +125,11 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
             }
 
             FavoriteChallenges = await _context.UserRates
-            .Where(ur => ur.UserId == user.Id && ur.Rate > 0)
-            .Select(ur => ur.Challenge)
-            .ToListAsync();
+                .Where(ur => ur.UserId == user.Id && ur.Rate > 0)
+                .Select(ur => ur.Challenge)
+                .ToListAsync();
         }
+
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -182,14 +184,14 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
             var userDetails = await _context.UserDetails.FirstOrDefaultAsync(p => p.UserId == user.Id);
             if (userDetails != null)
             {
-                userDetails.Description = Description;
+                userDetails.Description = Input.Description; // Update description with Input.Description
                 _context.UserDetails.Update(userDetails);
                 await _context.SaveChangesAsync();
             }
 
             await _signInManager.RefreshSignInAsync(user);
 
-            ProfileDetail = _context.UserDetails.Where(p => p.UserId == user.Id).FirstOrDefault();
+            ProfileDetail = await _context.UserDetails.FirstOrDefaultAsync(p => p.UserId == user.Id);
 
             if (FileUpload.FormFile != null)
             {
@@ -201,10 +203,38 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
                     _context.UserDetails.Update(ProfileDetail);
                 }
             }
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
+
+
+        public async Task<IActionResult> OnPostRemoveFavoriteAsync(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var userFavorite = await _context.UserFavorites
+                .FirstOrDefaultAsync(uf => uf.UserId == user.Id && uf.ChallengeId == id);
+
+            if (userFavorite != null)
+            {
+                _context.UserFavorites.Remove(userFavorite);
+                await _context.SaveChangesAsync();
+                TempData["StatusMessage"] = "Favorite challenge removed."; // Store status message in TempData
+            }
+            else
+            {
+                TempData["StatusMessage"] = "Favorite challenge not found."; // Store status message in TempData
+            }
+
+            await LoadAsync(user);
+            return RedirectToPage();
+        }
+
     }
 }

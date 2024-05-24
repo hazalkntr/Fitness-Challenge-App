@@ -22,6 +22,9 @@ namespace Fitness.Pages
 
         public IList<ChallengeWithJoinStatus> AvailableChallenges { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public class ChallengeWithJoinStatus
         {
             public Challenge Challenge { get; set; }
@@ -161,10 +164,14 @@ namespace Fitness.Pages
                 _context.UserFavorites.Add(favorite);
                 await _context.SaveChangesAsync();
 
+                
+                StatusMessage = "Added to favorite challenges! View them on your profile page.";
+
                 Console.WriteLine($"User {userId} saved challenge {challengeId} to favorites.");
             }
             else
             {
+                StatusMessage = "This challenge is already one of your favorite challenges! View them on your profile page.";
                 Console.WriteLine($"User {userId} already has challenge {challengeId} in favorites.");
             }
 

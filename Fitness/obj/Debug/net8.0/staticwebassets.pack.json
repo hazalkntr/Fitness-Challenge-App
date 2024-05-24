@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\cicek.jpg",
+      "PackagePath": "staticwebassets\\images\\cicek.jpg"
+    },
+    {
       "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\dumb.jpg",
       "PackagePath": "staticwebassets\\images\\dumb.jpg"
     },
@@ -27,6 +31,10 @@
     {
       "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\fitness.jpg",
       "PackagePath": "staticwebassets\\images\\fitness.jpg"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\nature.jpg",
+      "PackagePath": "staticwebassets\\images\\nature.jpg"
     },
     {
       "Id": "C:\\Users\\user\\Desktop\\6th sem\\WEB\\ceng 382 project Fitness challenge\\Fitness-Challenge-App\\Fitness\\wwwroot\\images\\run.jpg",

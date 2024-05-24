@@ -1,0 +1,91 @@
+@page
+@model Fitness.Pages.YourChallengesModel
+@{
+    ViewData["Title"] = "Your Challenges";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Challenges</title>
+    <style>
+        body {
+            background-image: url('/images/nature.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .challenge-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Challenges</h1>
+
+        @if (Model.UserChallenges.Any())
+        {
+            @foreach (var challengeWithJoinStatus in Model.UserChallenges)
+            {
+                var challenge = challengeWithJoinStatus.Challenge;
+                <div class="challenge-container">
+                    <h2>@challenge.Title</h2>
+                    <p>@challenge.Description</p>
+                    <p><strong>Start Date:</strong> @challenge.StartDate.ToShortDateString()</p>
+                    <p><strong>End Date:</strong> @challenge.EndDate?.ToShortDateString()</p>
+                    <p><strong>Category:</strong> @challenge.Category</p>
+                    <p><strong>Difficulty Level:</strong> @challenge.DifficultyLevel</p>
+                    <p><strong>Instructions:</strong> @challenge.Instructions</p>
+                    
+                    <form method="post" asp-page-handler="UpdateStreak" asp-route-challengeId="@challenge.ChallengeId">
+                        <label>
+                            <input type="checkbox" name="performedToday" /> Did you perform necessary actions for this challenge today?
+                        </label>
+                        <button type="submit" class="btn btn-primary">Update Streak</button>
+                    </form>
+
+                    <h3>Leaderboard</h3>
+                    @if (challengeWithJoinStatus.Leaderboard.Any())
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>User</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in challengeWithJoinStatus.Leaderboard)
+                                {
+                                    <tr>
+                                        <td>@item.Rank</td>
+                                        <td>@item.Username</td>
+                                        <td>@item.Score</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>No leaderboard data available.</p>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <p>You are not participating in any challenges.</p>
+        }
+    </div>
+</body>
+</html>

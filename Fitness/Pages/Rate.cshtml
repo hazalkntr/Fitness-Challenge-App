@@ -1,0 +1,107 @@
+@page
+@model MyApp.Namespace.RateModel
+@{
+    ViewData["Title"] = "Rate Challenges";
+}
+
+<style>
+
+    .cnt {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    select,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #ffa500; /* Orange */
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #ff7f00; /* Darker orange on hover */
+    }
+
+    .link {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .link a {
+        color: #007bff; /* Blue */
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .link a:hover {
+        color: #0056b3; /* Darker blue on hover */
+    }
+</style>
+
+<div class="cnt">
+    <h1>Rate Challenges</h1>
+
+    <form method="post">
+        <div class="form-group">
+            <label for="challenge">Select Challenge:</label>
+            <select class="form-control" id="challenge" asp-for="SelectedChallengeId">
+                <option value="">Select a challenge...</option>
+                @foreach (var challenge in Model.AvailableChallenges)
+                {
+                    <option value="@challenge.ChallengeId">@challenge.Title</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            <select class="form-control" id="rating" asp-for="Rating">
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control" id="comment" rows="3" asp-for="Comment"></textarea>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="link">
+        <a href="/AvailableChallenges">View Available Challenges</a>
+    </div>
+</div>

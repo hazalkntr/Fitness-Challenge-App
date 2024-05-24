@@ -109,7 +109,7 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
             }
             else
             {
-                // Save a default image if no profile photo is available
+                
                 string path = "./wwwroot/images/empty_profile.jpg";
                 using var stream = System.IO.File.OpenRead(path);
                 var memoryStream = new MemoryStream();
@@ -184,7 +184,7 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
             var userDetails = await _context.UserDetails.FirstOrDefaultAsync(p => p.UserId == user.Id);
             if (userDetails != null)
             {
-                userDetails.Description = Input.Description; // Update description with Input.Description
+                userDetails.Description = Input.Description; 
                 _context.UserDetails.Update(userDetails);
                 await _context.SaveChangesAsync();
             }
@@ -225,11 +225,11 @@ namespace Fitness.Areas.Identity.Pages.Account.Manage
             {
                 _context.UserFavorites.Remove(userFavorite);
                 await _context.SaveChangesAsync();
-                TempData["StatusMessage"] = "Favorite challenge removed."; // Store status message in TempData
+                TempData["StatusMessage"] = "Favorite challenge removed.";
             }
             else
             {
-                TempData["StatusMessage"] = "Favorite challenge not found."; // Store status message in TempData
+                TempData["StatusMessage"] = "Favorite challenge not found.";
             }
 
             await LoadAsync(user);

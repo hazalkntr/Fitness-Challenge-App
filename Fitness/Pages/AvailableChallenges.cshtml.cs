@@ -29,7 +29,17 @@ namespace Fitness.Pages
         {
             public Challenge Challenge { get; set; }
             public bool IsJoined { get; set; }
+            public List<Leaderboard> Leaderboard { get; set; }
         }
+
+        private async Task<List<Leaderboard>> GetLeaderboardForChallenge(int challengeId)
+        {
+            return await _context.Leaderboards
+                .Where(l => l.ChallengeId == challengeId)
+                .OrderBy(l => l.Rank)
+                .ToListAsync();
+        }
+
         public class DifficultyLevelComparer : IComparer<string>
         {
             public int Compare(string x, string y)
@@ -92,11 +102,18 @@ namespace Fitness.Pages
                 .Select(cp => cp.ChallengeId)
                 .ToListAsync();
 
-            AvailableChallenges = filteredChallenges.Select(challenge => new ChallengeWithJoinStatus
+            AvailableChallenges = new List<ChallengeWithJoinStatus>();
+
+            foreach (var challenge in filteredChallenges)
             {
-                Challenge = challenge,
-                IsJoined = joinedChallenges.Contains(challenge.ChallengeId)
-            }).ToList();
+                var challengeWithJoinStatus = new ChallengeWithJoinStatus
+                {
+                    Challenge = challenge,
+                    IsJoined = joinedChallenges.Contains(challenge.ChallengeId),
+                    Leaderboard = await GetLeaderboardForChallenge(challenge.ChallengeId) // Retrieve leaderboard for each challenge
+                };
+                AvailableChallenges.Add(challengeWithJoinStatus);
+            }
 
         }
 

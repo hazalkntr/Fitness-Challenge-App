@@ -274,6 +274,9 @@ public partial class FitnessChallengeContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ChallengeId).HasColumnName("challengeId");
+            entity.Property(e => e.Comment)
+                .HasMaxLength(1000)
+                .HasColumnName("comment");
             entity.Property(e => e.Rate).HasColumnName("rate");
             entity.Property(e => e.UserId)
                 .HasMaxLength(450)

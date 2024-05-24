@@ -49,13 +49,13 @@ namespace MyApp.Namespace
                 UserId = userId,
                 ChallengeId = SelectedChallengeId,
                 Rate = Rating,
-                // Save other properties as needed
+                Comment = Comment, 
             };
 
             _context.UserRates.Add(userRate);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/FitnessService");
+            return RedirectToPage("/ChallengeStatistics");
         }
     }
 }

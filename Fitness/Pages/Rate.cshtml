@@ -38,20 +38,39 @@
         font-size: 16px;
     }
 
+    .stat {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #4ffac1; 
+        border-color: #2fa37d; 
+        color: #333; 
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+    }
+    .stat:hover {
+        color: #333; 
+        background-color: #46db52; ; 
+        border-color: #22a32d; 
+    }
+
     button {
         width: 100%;
         padding: 10px;
         border: none;
         border-radius: 5px;
         font-size: 16px;
-        background-color: #ffa500; /* Orange */
+        background-color: #ffa500; 
         color: #fff;
         cursor: pointer;
         transition: background-color 0.3s;
     }
 
     button:hover {
-        background-color: #ff7f00; /* Darker orange on hover */
+        background-color: #ff7f00;
     }
 
     .link {
@@ -60,13 +79,12 @@
     }
 
     .link a {
-        color: #007bff; /* Blue */
-        text-decoration: none;
+        color: #fd23f2; 
         transition: color 0.3s;
     }
 
     .link a:hover {
-        color: #0056b3; /* Darker blue on hover */
+        color: #b300aa;
     }
 </style>
 
@@ -100,7 +118,11 @@
         </div>
         <button type="submit">Submit</button>
     </form>
-
+    <br>
+    <div class="text-center mt-3">
+        <a href="/ChallengeStatistics" class="stat" style="">View Challenge Statistics</a>
+    </div>
+    <br>
     <div class="link">
         <a href="/AvailableChallenges">View Available Challenges</a>
     </div>

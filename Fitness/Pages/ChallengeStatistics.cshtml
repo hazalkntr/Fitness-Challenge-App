@@ -1,0 +1,65 @@
+@page
+@model MyApp.Namespace.ChallengeStatisticsModel
+@{
+    ViewData["Title"] = "Challenge Statistics";
+}
+
+<style>
+    table {
+        max-width: 1300px;
+        border-collapse: collapse;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #a1a1a1;
+    }
+
+    th {
+        font-weight: bold;
+    }
+
+    .comments {
+        color: #333; /* Adjust color as needed */
+        margin-bottom: 10px;
+    }
+
+    .comment {
+        margin-left: 20px; /* Adjust indentation as needed */
+    }
+</style>
+
+<h1>Challenge Statistics</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Challenge</th>
+            <th>Average Rating</th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var challengeStat in Model.ChallengeStatistics)
+        {
+            <tr>
+                <td>@challengeStat.Challenge.Title</td>
+                <td>@challengeStat.AverageRating</td>
+                <td class="comments">
+                    <ul>
+                        @foreach (var comment in challengeStat.Comments)
+                        {
+                            <li class="comment">@comment</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

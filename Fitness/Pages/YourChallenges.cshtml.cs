@@ -65,7 +65,7 @@ namespace Fitness.Pages
                 })
                 .ToListAsync();
 
-            // Ensure the leaderboard includes all participants
+            //leaderboard includes all participants
             foreach (var challengeWithJoinStatus in UserChallenges)
             {
                 Console.WriteLine($"Updating leaderboard for challenge ID: {challengeWithJoinStatus.Challenge.ChallengeId}");
@@ -77,7 +77,7 @@ namespace Fitness.Pages
 
         private async Task UpdateLeaderboardAsync(int challengeId, List<LeaderboardViewModel> leaderboard)
         {
-            // Retrieve participants of the challenge
+            //participants of the challenge
             var participants = await _context.ChallengeParticipants
                 .Where(cp => cp.ChallengeId == challengeId)
                 .ToListAsync();
@@ -92,16 +92,16 @@ namespace Fitness.Pages
                     var existingEntry = leaderboard.FirstOrDefault(l => l.Username == user.Username);
                     if (existingEntry != null)
                     {
-                        // Update existing entry
+                        //update existing 
                         existingEntry.Score = CalculateScore(participant.StreakCount ?? 0);
                         Console.WriteLine($"Updated score for {user.Username}: {existingEntry.Score}");
                     }
                     else
                     {
-                        // Add new entry
+                        //new entry
                         leaderboard.Add(new LeaderboardViewModel
                         {
-                            Rank = 0, // Will be updated later
+                            Rank = 0, //-> this is temporarry. 
                             Username = user.Username,
                             Score = CalculateScore(participant.StreakCount ?? 0)
                         });
@@ -114,7 +114,7 @@ namespace Fitness.Pages
                 }
             }
 
-            // Order and assign ranks
+            //order and give rank
             leaderboard = leaderboard.OrderByDescending(l => l.Score).ToList();
             for (int i = 0; i < leaderboard.Count; i++)
             {
@@ -125,7 +125,7 @@ namespace Fitness.Pages
 
         private double CalculateScore(int streakCount)
         {
-            // Scoring logic: Score = StreakCount * 10 (for leaderboards)
+            // score is streak count x10 
             return streakCount * 10;
         }
 

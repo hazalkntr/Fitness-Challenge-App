@@ -26,12 +26,12 @@
     }
 
     .comments {
-        color: #333; /* Adjust color as needed */
+        color: #333; 
         margin-bottom: 10px;
     }
 
     .comment {
-        margin-left: 20px; /* Adjust indentation as needed */
+        margin-left: 20px; 
     }
 </style>
 
@@ -50,7 +50,7 @@
         {
             <tr>
                 <td>@challengeStat.Challenge.Title</td>
-                <td>@challengeStat.AverageRating</td>
+                <td>@challengeStat.AverageRating.ToString("F2")</td>
                 <td class="comments">
                     <ul>
                         @foreach (var comment in challengeStat.Comments)

@@ -65,11 +65,11 @@ namespace Fitness.Pages
                 return Page();
             }
 
-            // Get the current user's ID from the claims
+            //current user's ID
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null)
             {
-                return Unauthorized(); // User is not authenticated
+                return Unauthorized(); 
             }
 
             var userId = userIdClaim.Value;

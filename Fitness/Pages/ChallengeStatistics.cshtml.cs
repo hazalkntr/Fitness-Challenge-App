@@ -19,7 +19,7 @@ namespace MyApp.Namespace
 
         public void OnGet()
         {
-            //average ratings and comments for each challenge
+            //avg ratings and comments for each challenge
             ChallengeStatistics = _context.Challenges
                 .Include(c => c.UserRates)
                 .Select(c => new ChallengeStatisticViewModel

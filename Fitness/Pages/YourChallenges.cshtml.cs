@@ -125,7 +125,7 @@ namespace Fitness.Pages
 
         private double CalculateScore(int streakCount)
         {
-            // score is streak count x10 
+            //score is streak count x10 
             return streakCount * 10;
         }
 

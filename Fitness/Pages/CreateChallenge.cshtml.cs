@@ -65,7 +65,7 @@ namespace Fitness.Pages
                 return Page();
             }
 
-            //current user's ID
+            //current user's id
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null)
             {
